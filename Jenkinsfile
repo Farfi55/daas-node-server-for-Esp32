@@ -46,8 +46,10 @@ pipeline {
                     REMOTE_HOST=daas-aws
                     REMOTE_PATH=/home/admin/daas-node-server
 
+                    ssh ${REMOTE_USER}@${REMOTE_HOST} 'mkdir -p ${REMOTE_PATH}'
+
                     # Copy files to the remote server
-                    rsync -avz --exclude='node_modules' ./ ${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_PATH}
+                    scp -r * ${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_PATH}
 
                     # SSH into the remote server and restart the application
                     ssh ${REMOTE_USER}@${REMOTE_HOST} << EOF
