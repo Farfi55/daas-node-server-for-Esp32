@@ -40,13 +40,13 @@ pipeline {
                 // Deploy the application
                 // Replace 'aws-ssh-credentials' with the ID of your SSH credentials in Jenkins
                 sshagent(['farfi-ssh']) {
-                    sh '''
+                    sh """
                     # Define the remote host and path variables
                     REMOTE_USER=admin
                     REMOTE_HOST=daas-aws
                     REMOTE_PATH=/home/admin/daas-node-server
 
-                    ssh ${REMOTE_USER}@${REMOTE_HOST} 'mkdir -p ${REMOTE_PATH}'
+                    ssh ${REMOTE_USER}@${REMOTE_HOST} "mkdir -p ${REMOTE_PATH}"
 
                     # Copy files to the remote server
                     scp -r * ${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_PATH}
@@ -57,7 +57,7 @@ pipeline {
                       npm install --production
                       pm2 reload index.js
                     EOF
-                    '''
+                    """
                 }
             }
         }
