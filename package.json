@@ -1,0 +1,14 @@
+{
+  "name": "daas-node-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "daas-sdk": "^0.17.5"
+  }
+}
