@@ -49,7 +49,6 @@ pipeline {
                     # SSH into the remote server, clone the repository, and update it
                     ssh "${REMOTE_USER}@${REMOTE_HOST}" <<EOF
                       # Ensure environment variables are set
-                      . ~/.profile
 
                       # Check if the repository directory exists
                       if [ ! -d "${REMOTE_PATH}" ]; then
@@ -61,7 +60,11 @@ pipeline {
                       fi
 
                       # Install dependencies and reload the application
-                      cd "${REMOTE_PATH}"                      
+                      cd "${REMOTE_PATH}"
+
+                      echo $PATH
+                      which npm
+
                       npm install --production
                       
                       # Find and kill any existing Node.js processes running index.js
