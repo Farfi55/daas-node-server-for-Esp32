@@ -40,29 +40,37 @@ pipeline {
                 // Deploy the application
                 // Replace 'aws-ssh-credentials' with the ID of your SSH credentials in Jenkins
                 sshagent(['farfi-ssh']) {
-                    sh """
+                    sh '''
                     # Define the remote host and path variables
                     REMOTE_USER=admin
                     REMOTE_HOST=daas-aws
                     REMOTE_PATH=/home/admin/daas-node-server
 
                     # SSH into the remote server, clone the repository, and update it
-                    ssh "admin@daas-aws" << EOF
+                    ssh "${REMOTE_USER}@${REMOTE_HOST}" <<EOF
+                      # Ensure environment variables are set
                       . ~/.profile
 
-                      if [ ! -d "/home/admin/daas-node-server" ]; then
-                        git clone https://github.com/Farfi55/daas-node-server-for-Esp32.git /home/admin/daas-node-server
+                      # Check if the repository directory exists
+                      if [ ! -d "${REMOTE_PATH}" ]; then
+                        git clone https://github.com/Farfi55/daas-node-server-for-Esp32.git "${REMOTE_PATH}"
                       else
-                        cd /home/admin/daas-node-server
+                        cd ${REMOTE_PATH}
                         git stash push -m "Backup before deployment"
-                        git pull
+                        git pull origin master
                       fi
 
-                      cd /home/admin/daas-node-server
+                      # Install dependencies and reload the application
+                      cd "${REMOTE_PATH}"                      
                       npm install --production
-                      pm2 reload index.js
+                      
+                      # Find and kill any existing Node.js processes running index.js
+                      pkill -f 'node index.js' || true
+
+                      # Start the application with Node.js
+                      nohup node index.js > app.log 2>&1 &
                     EOF
-                    """
+                    '''
                 }
             }
         }
