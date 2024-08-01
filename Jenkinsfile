@@ -1,5 +1,5 @@
 pipeline {
-    agent { docker { image 'node:22-alpine3.20' } }
+    agent any
 
     environment {
         // Define any environment variables, such as PATHs or secrets
