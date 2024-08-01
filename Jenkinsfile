@@ -46,10 +46,10 @@ pipeline {
                     REMOTE_HOST=daas-aws
                     REMOTE_PATH=/home/admin/daas-node-server
 
-                    ssh ${REMOTE_USER}@${REMOTE_HOST} "mkdir -p ${REMOTE_PATH}"
+                    ssh admin@daas-aws "mkdir -p /home/admin/daas-node-server"
 
                     # Copy files to the remote server
-                    scp -r * ${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_PATH}
+                    scp -r * admin@daas-aws:/home/admin/daas-node-server
 
                     # SSH into the remote server and restart the application
                      ssh admin@daas-aws << EOF
