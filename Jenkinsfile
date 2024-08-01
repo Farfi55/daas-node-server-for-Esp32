@@ -52,8 +52,8 @@ pipeline {
                     scp -r * ${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_PATH}
 
                     # SSH into the remote server and restart the application
-                     ssh "${REMOTE_USER}@${REMOTE_HOST}" << EOF
-                      cd "${REMOTE_PATH}"
+                     ssh admin@daas-aws << EOF
+                      cd /home/admin/daas-node-server
                       npm install --production
                       pm2 reload index.js
                     EOF
