@@ -49,8 +49,8 @@ pipeline {
                     ssh admin@daas-aws "mkdir -p /home/admin/daas-node-server"
 
                     # Copy files to the remote server
-                    scp -r * admin@daas-aws:/home/admin/daas-node-server
-
+                    rsync -avz --exclude='node_modules' . admin@daas-aws:/home/admin/daas-node-server
+                    
                     # SSH into the remote server and restart the application
                      ssh admin@daas-aws << EOF
                       cd /home/admin/daas-node-server
