@@ -52,8 +52,8 @@ pipeline {
                     scp -r * ${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_PATH}
 
                     # SSH into the remote server and restart the application
-                    ssh ${REMOTE_USER}@${REMOTE_HOST} << EOF
-                      cd ${REMOTE_PATH}
+                     ssh "${REMOTE_USER}@${REMOTE_HOST}" << EOF
+                      cd "${REMOTE_PATH}"
                       npm install --production
                       pm2 reload index.js
                     EOF
