@@ -46,13 +46,18 @@ pipeline {
                     REMOTE_HOST=daas-aws
                     REMOTE_PATH=/home/admin/daas-node-server
 
-                    ssh admin@daas-aws "mkdir -p /home/admin/daas-node-server"
+                    # SSH into the remote server, clone the repository, and update it
+                    ssh "admin@daas-aws" << EOF
+                      . ~/.profile
 
-                    # Copy files to the remote server
-                    rsync -avz --exclude='node_modules' . admin@daas-aws:/home/admin/daas-node-server
-                    
-                    # SSH into the remote server and restart the application
-                     ssh admin@daas-aws << EOF
+                      if [ ! -d "/home/admin/daas-node-server" ]; then
+                        git clone https://github.com/Farfi55/daas-node-server-for-Esp32.git /home/admin/daas-node-server
+                      else
+                        cd /home/admin/daas-node-server
+                        git stash push -m "Backup before deployment"
+                        git pull
+                      fi
+
                       cd /home/admin/daas-node-server
                       npm install --production
                       pm2 reload index.js
