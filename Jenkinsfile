@@ -17,20 +17,23 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 // Install Node.js and dependencies
-                nodejs(NODE_VERSION) {
-                    sh 'npm install'
-                }
+                sh 'npm install'
             }
         }
 
         stage('Run Tests') {
             steps {
                 // Run tests
-                nodejs(NODE_VERSION) {
-                    sh 'npm test'
-                }
+                sh 'npm test'
             }
         }
+
+        // right now, no build step is needed
+        // stage('Build') {
+        //     steps {
+                
+        //     }
+        // }
 
         stage('Deploy') {
             steps {
